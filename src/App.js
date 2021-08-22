@@ -15,7 +15,7 @@ function App() {
     fetch(`${API_URL}?page=${page}`).then(response => {
       response.json().then(data => {
         setData(data.results)
-        setInfo(data.info)
+        setInfo({ ...data.info, lastPage: Math.ceil(info.count/PER_PAGE)})
         setLoading(false)
       })
     })
@@ -45,25 +45,25 @@ function App() {
       </tbody>
       <button 
         onClick={() => setPage(1)}
-        disabled={loading || page == 1}
+        disabled={loading || page === 1}
       >
         First
       </button>
       <button 
         onClick={() => setPage(prevPage => prevPage - 1)}
-        disabled={loading || page == 1}
+        disabled={loading || page === 1}
       >
         Previous
       </button>
       <button 
         onClick={() => setPage(prevPage => prevPage + 1)}
-        disabled={loading || page == Math.ceil(info.count/PER_PAGE)}
+        disabled={loading || page === info.lastPage}
       >
         Next
       </button>
       <button 
-        onClick={() => setPage(Math.ceil(info.count/PER_PAGE))}
-        disabled={loading || page == Math.ceil(info.count/PER_PAGE)}
+        onClick={() => setPage(info.lastPage)}
+        disabled={loading || page === info.lastPage}
       >
         Last
       </button>
